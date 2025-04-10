@@ -30,6 +30,7 @@ jobs:
 
       - name: build_pyglet
         run: |
+          git add . # what ever changed, likely uv.lock
           uv run python ./make.py dist
 
       
