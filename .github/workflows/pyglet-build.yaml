@@ -20,8 +20,8 @@ jobs:
           ref: pygodide
 
       - uses: astral-sh/setup-uv@v3
-        with:
-          enable-cache: true
+        # with:
+          # enable-cache: true
       - run: |
           uv python install
           uv sync
