@@ -1,5 +1,9 @@
-jobs:
+name: Build pyglet
 
+on:
+  workflow_dispatch:
+
+jobs:
   build:
 
     # Build on Linux, Windows and MacOS
