@@ -1,0 +1,37 @@
+jobs:
+
+  build:
+
+    # Build on Linux, Windows and MacOS
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      with:
+        repository: caffeinepills/pyglet
+        ref: pygodide
+
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+      - run: |
+          uv python install
+          uv sync
+          uv pip install flit
+
+
+      - name: build_pyglet
+        run: |
+          uv run python ./make.py dist
+
+      
+      # upload as build artefact
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mygame-${{ matrix.os }}
+          path: dist/*.whl
+          retention-days: 1
