@@ -15,9 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      with:
-        repository: caffeinepills/pyglet
-        ref: pygodide
+        with:
+          repository: caffeinepills/pyglet
+          ref: pygodide
 
       - uses: astral-sh/setup-uv@v3
         with:
