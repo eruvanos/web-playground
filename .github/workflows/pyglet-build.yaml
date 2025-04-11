@@ -1,4 +1,4 @@
-name: Build pyglet
+name: Update pyglet wheel
 
 permissions:
   contents: write
@@ -17,29 +17,48 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - uses: actions/checkout@v
+        with:
+          path: playground
       - uses: actions/checkout@v4
         with:
           repository: caffeinepills/pyglet
           ref: pygodide
+          path: pyglet
 
       - uses: astral-sh/setup-uv@v3
         # with:
           # enable-cache: true
       - run: |
           uv python install
+          cd $GITHUB_WORKSPACE/pyglet
           uv sync
           uv pip install flit
 
 
       - name: build_pyglet
         run: |
-          git add . # what ever changed, likely uv.lock
+          rm uv.lock # remove left overs from uv sync
           uv run python ./make.py dist
       
-      # upload as build artefact
-      - name: Upload release assets
-        uses: softprops/action-gh-release@v2
+      - name: update vendored wheel
+        run: |
+          git add . # what ever changed, likely uv.lock
+          uv run python ./make.py dist
+
+
+      - name: update vendored wheel
+        run: |
+          cd $GITHUB_WORKSPACE
+          cp -f pyglet/dist/*.whl playground/wheels/
+          cd playground
+          git add *.whl
+          git commit -m "update pyglet wheel"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          tag_name: experimental
-          files: |
-            dist/*.whl
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: playground
+          
