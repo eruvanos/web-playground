@@ -27,34 +27,25 @@ jobs:
           path: pyglet
 
       - uses: astral-sh/setup-uv@v3
-        # with:
-          # enable-cache: true
       - run: |
-          uv python install
           cd $GITHUB_WORKSPACE/pyglet
+          uv python install
           uv sync
           uv pip install flit
 
 
       - name: build_pyglet
         run: |
-          pwd
-          git status
+          cd $GITHUB_WORKSPACE/pyglet
           uv run python ./make.py dist
-      
-      - name: update vendored wheel
-        run: |
-          git add . # what ever changed, likely uv.lock
-          uv run python ./make.py dist
-
 
       - name: update vendored wheel
         run: |
-          cd $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE # explicit is better than implicit
           cp -f pyglet/dist/*.whl playground/wheels/
           cd playground
           git add *.whl
-          git commit -m "update pyglet wheel"
+          git commit -m "[ci] update pyglet wheel"
           
       - name: Push changes
         uses: ad-m/github-push-action@master
