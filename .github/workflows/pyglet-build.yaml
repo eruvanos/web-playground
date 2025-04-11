@@ -38,6 +38,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/pyglet
           rm uv.lock
+          git status
           uv run python ./make.py dist
 
       - name: update vendored wheel
