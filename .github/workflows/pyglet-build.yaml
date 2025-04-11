@@ -37,7 +37,6 @@ jobs:
       - name: build_pyglet
         run: |
           cd $GITHUB_WORKSPACE/pyglet
-          git status
           rm uv.lock
           uv run python ./make.py dist
 
