@@ -37,8 +37,16 @@ jobs:
       - name: build_pyglet
         run: |
           cd $GITHUB_WORKSPACE/pyglet
+          echo "Files"
+          ls -lah
+
+          echo "remove lock
           rm uv.lock
-          git status
+
+          echo "Files
+          ls -lah
+
+          echo "Build"
           uv run python ./make.py dist
 
       - name: update vendored wheel
