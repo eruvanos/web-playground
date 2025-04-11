@@ -40,10 +40,10 @@ jobs:
           echo "Files"
           ls -lah
 
-          echo "remove lock
+          echo "remove lock"
           rm -f uv.lock
 
-          echo "Files
+          echo "Files"
           ls -lah
 
           echo "Build"
