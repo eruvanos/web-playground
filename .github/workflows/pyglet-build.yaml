@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v
+      - uses: actions/checkout@v4
         with:
           path: playground
       - uses: actions/checkout@v4
