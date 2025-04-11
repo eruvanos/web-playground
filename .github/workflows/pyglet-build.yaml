@@ -32,11 +32,11 @@ jobs:
         run: |
           git add . # what ever changed, likely uv.lock
           uv run python ./make.py dist
-
       
       # upload as build artefact
-      - uses: actions/upload-artifact@v4
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
         with:
-          name: mygame-${{ matrix.os }}
-          path: dist/*.whl
-          retention-days: 1
+          tag_name: experimental
+          files: |
+            dist/*.whl
