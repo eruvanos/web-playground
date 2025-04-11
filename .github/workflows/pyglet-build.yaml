@@ -41,11 +41,9 @@ jobs:
           echo "Files"
           ls -lah
 
-          echo "remove lock"
-          rm -f uv.lock
-
-          echo "Files"
-          ls -lah
+          echo "ignore all file changes"
+          git add .
+          git status
 
           echo "Build"
           uv run python ./make.py dist
