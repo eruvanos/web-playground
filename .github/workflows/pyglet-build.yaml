@@ -41,7 +41,7 @@ jobs:
           ls -lah
 
           echo "remove lock
-          rm uv.lock
+          rm -f uv.lock
 
           echo "Files
           ls -lah
