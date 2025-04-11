@@ -38,7 +38,8 @@ jobs:
 
       - name: build_pyglet
         run: |
-          rm uv.lock # remove left overs from uv sync
+          pwd
+          git status
           uv run python ./make.py dist
       
       - name: update vendored wheel
