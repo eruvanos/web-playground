@@ -25,27 +25,26 @@ jobs:
         with:
           repository: pythonarcade/arcade
           ref: pyglet-3
+          path: arcade # seperate lib from playground
 
       - uses: astral-sh/setup-uv@v3
       - run: |
-          cd $GITHUB_WORKSPACE
+          cd $GITHUB_WORKSPACE/arcade
           uv python install
           uv sync --all-extras
           uv pip install build
 
       - name: build_arcade
         run: |
-          cd $GITHUB_WORKSPACE
-          echo "ignore all file changes"
-          git add .
-          
+          cd $GITHUB_WORKSPACE/arcade
           echo "Build"
           uv run python -m build --sdist --wheel --outdir dist/
 
       - name: update vendored wheel
         run: |
           cd $GITHUB_WORKSPACE # explicit is better than implicit
-          cp -f dist/*.whl playground/wheels/
+          
+          cp -f arcade/dist/*.whl playground/wheels/
           cd playground
           git add *.whl
 
