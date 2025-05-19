@@ -1,0 +1,61 @@
+name: Update arcade wheel
+
+permissions:
+  contents: write
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    # Build on Linux, Windows and MacOS
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: playground
+      - uses: actions/checkout@v4
+        with:
+          repository: pythonarcade/arcade
+          ref: pyglet-3
+
+      - uses: astral-sh/setup-uv@v3
+      - run: |
+          cd $GITHUB_WORKSPACE/pyglet
+          uv python install
+          uv sync
+
+      - name: build_arcade
+        run: |
+          cd $GITHUB_WORKSPACE/pyglet
+          echo "ignore all file changes"
+          git add .
+          
+          echo "Build"
+          uv run python -m build --sdist --wheel --outdir dist/
+
+      - name: update vendored wheel
+        run: |
+          cd $GITHUB_WORKSPACE # explicit is better than implicit
+          cp -f dist/*.whl playground/wheels/
+          cd playground
+          git add *.whl
+
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git commit -m "[ci] update arcade wheel"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: playground
+          
