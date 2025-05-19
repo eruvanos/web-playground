@@ -28,13 +28,13 @@ jobs:
 
       - uses: astral-sh/setup-uv@v3
       - run: |
-          cd $GITHUB_WORKSPACE/pyglet
+          cd $GITHUB_WORKSPACE
           uv python install
           uv sync
 
       - name: build_arcade
         run: |
-          cd $GITHUB_WORKSPACE/pyglet
+          cd $GITHUB_WORKSPACE
           echo "ignore all file changes"
           git add .
           
