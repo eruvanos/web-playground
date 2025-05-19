@@ -30,7 +30,8 @@ jobs:
       - run: |
           cd $GITHUB_WORKSPACE
           uv python install
-          uv sync
+          uv sync --all-extras
+          
 
       - name: build_arcade
         run: |
