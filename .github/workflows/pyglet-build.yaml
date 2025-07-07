@@ -23,8 +23,8 @@ jobs:
           path: playground
       - uses: actions/checkout@v4
         with:
-          repository: caffeinepills/pyglet
-          ref: pygodide
+          repository: pyglet/pyglet
+          ref: development
           path: pyglet
 
       - uses: astral-sh/setup-uv@v3
